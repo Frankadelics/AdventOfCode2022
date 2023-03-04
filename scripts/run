@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+
+def createParser():
+    p = argparse.ArgumentParser(
+        prog = 'The Run Script',
+        description= 'Compiles and runs a program based on the day of AOC. Defaults to running C++. Use -p to run the python variant.',
+        epilog= 'If there are any errors, I will be sure to fix them...never :)'
+    )
+    p.add_argument('-c', action='store_true', dest='compile_only', help='Only for C++ files. Compile the file only. Do not run it')
+    p.add_argument('-r', action='store_true', dest='run_only'    , help='Only for C++ files. Run the compiled file only. No compile.')
+    p.add_argument('-p', action='store_true', dest='run_python'  , help='Runs Python variant of file instead of C++ variant.')
+    return p.parse_args()
+
+
+def getDay():
+    current_directory = os.getcwd()
+    for i in range(25):
+        if "day" + str(i + 1) in current_directory:
+            return "day" + str(i + 1)
+    raise Exception("Not in the directory of a specific day!")
+
+def compile(day, p):
+    if not p.run_python:
+        if not p.run_only:
+            os.system("g++ " + day + ".cpp" + " -o " + day + ".out")
+
+def run(day, p):
+    if p.run_python:
+        os.system("python3 " + day + ".py")
+    else:
+        if not p.compile_only:
+            os.system("./" + day)
+
+def main():
+    p = createParser()
+    day = getDay()
+    compile(day, p)
+    run(day, p)
+
+if __name__ == "__main__":
+    main()
