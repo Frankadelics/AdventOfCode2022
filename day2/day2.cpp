@@ -123,7 +123,7 @@ void printTallys()
 
 int main()
 {
-    //Part 1
+    cout << "Part 1" << endl;
     getInputVector("small_input_day2.txt", 1);
     calcScore();
     clearTallys();
@@ -131,7 +131,7 @@ int main()
     calcScore();
     clearTallys();
 
-    //Part 2
+    cout << "Part 2" << endl;
     getInputVector("small_input_day2.txt", 2);
     calcScore();
     clearTallys();
