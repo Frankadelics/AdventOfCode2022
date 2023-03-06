@@ -32,7 +32,7 @@ def run(day, p):
         os.system("python3 " + day + ".py")
     else:
         if not p.compile_only:
-            os.system("./" + day)
+            os.system("./" + day + ".out")
 
 def main():
     p = createParser()
