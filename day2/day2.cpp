@@ -1,17 +1,8 @@
 /*
+    Opponents Choices
     A - Rock
     B - Paper
     C - Scissors
-
-    Part 1
-    X - Choose Rock
-    Y - Choose Paper
-    Z - Choose Scissors
-
-    Part 2
-    X - Need to Lose
-    Y - Need to Draw
-    Z - Need to Win
 
     Points Awarded for Shape
     1  - Rock
@@ -22,6 +13,16 @@
     0 - Lose
     3 - Draw
     6 - Win
+
+    Part 1 - What Shape Do I Pick?
+    X - Choose Rock
+    Y - Choose Paper
+    Z - Choose Scissors
+
+    Part 2 - What Outcome Do I Want?
+    X - Need to Lose
+    Y - Need to Draw
+    Z - Need to Win
 */
 
 #include <iostream>
@@ -31,17 +32,6 @@
 #include <sstream>
 
 using namespace std;
-
-//class Score() {
-//    private:
-//        string choice = "";
-//        char outcome = '';
-//        int score = 0;
-//    public:
-//        getChoice() { return choice; }
-//        getOutcome() { return outcome; }
-//        getScore() { return score; }
-//}
 
 int tallys[10];
 
