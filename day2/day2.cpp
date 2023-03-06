@@ -3,9 +3,15 @@
     B - Paper
     C - Scissors
 
+    Part 1
     X - Choose Rock
     Y - Choose Paper
     Z - Choose Scissors
+
+    Part 2
+    X - Need to Lose
+    Y - Need to Draw
+    Z - Need to Win
 
     Points Awarded for Shape
     1  - Rock
@@ -61,6 +67,28 @@ void tallyPointsPart1(string input)
         tallys[9]++;
 }
 
+void tallyPointsPart2(string input)
+{
+    if (input == "B X")
+        tallys[1]++;   
+    if (input == "C X")
+        tallys[2]++;
+    if (input == "A X")
+        tallys[3]++;
+    if (input == "A Y")
+        tallys[4]++;
+    if (input == "B Y")
+        tallys[5]++;
+    if (input == "C Y")
+        tallys[6]++;
+    if (input == "C Z")
+        tallys[7]++;
+    if (input == "A Z")
+        tallys[8]++;
+    if (input == "B Z")
+        tallys[9]++;
+}
+
 void calcScore()
 {
     int total_score = 0;
@@ -69,12 +97,15 @@ void calcScore()
     cout << "Total Score: " << total_score << endl;
 }
 
-void getInputVector(string filename)
+void getInputVector(string filename, int part)
 {
     string input = "";
     ifstream readFromFile(filename);
     while (getline(readFromFile, input)) {
-        tallyPointsPart1(input);
+        if (part == 1)
+            tallyPointsPart1(input);
+        else
+            tallyPointsPart2(input);
     }
 }
 
@@ -93,12 +124,19 @@ void printTallys()
 int main()
 {
     //Part 1
-    getInputVector("small_input_day2.txt");
+    getInputVector("small_input_day2.txt", 1);
     calcScore();
     clearTallys();
-    getInputVector("large_input_day2.txt");
+    getInputVector("large_input_day2.txt", 1);
     calcScore();
     clearTallys();
 
+    //Part 2
+    getInputVector("small_input_day2.txt", 2);
+    calcScore();
+    clearTallys();
+    getInputVector("large_input_day2.txt", 2);
+    calcScore();
+    clearTallys();
     return 0;
 }
