@@ -16,11 +16,14 @@ def createDayFiles(p):
     dayNum = p.day_input
     newDayDir = "/home/frankie/aoc2022/day" + dayNum + "/"
     os.system("mkdir " + newDayDir)
-    os.system("touch " + newDayDir + "day" + dayNum + ".cpp")
-    os.system("touch " + newDayDir + "day" + dayNum + ".py")
+    os.system("echo \"#include <iostream>\nusing namespace std;\n\nint main()\n{\n\treturn 0;\n}\n\" > " + newDayDir + "day" + dayNum + ".cpp")
+    os.system("echo \"def main():\n\tprint()\n\nif __name__ == \"__main__\":\n\tmain()\" > " + newDayDir + "day" + dayNum + ".py")
     os.system("touch " + newDayDir + "small_input_day" + dayNum + ".txt")
     os.system("touch " + newDayDir + "large_input_day" + dayNum + ".txt")
     os.system("touch " + newDayDir + "day" + dayNum + ".out")
+    #os.system("mkdir " + newDayDir)
+    #os.system("touch " + newDayDir + "day" + dayNum + ".cpp")
+    #os.system("touch " + newDayDir + "day" + dayNum + ".py")
 
 def main():
     p = createParser()
