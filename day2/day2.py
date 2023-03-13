@@ -69,9 +69,9 @@ def main():
     small_tally_counter_2 = [0] * 10
     large_tally_counter_2 = [0] * 10
     for x in range(len(small_tally_list)):
-        tallyPointsPart2(small_tally_list[x], small_tally_counter)
+        tallyPointsPart2(small_tally_list[x], small_tally_counter_2)
     for x in range(len(large_tally_list)):
-        tallyPointsPart2(large_tally_list[x], large_tally_counter)
+        tallyPointsPart2(large_tally_list[x], large_tally_counter_2)
     print("Total Score: " + str(calcScore(small_tally_counter_2)))
     print("Total Score: " + str(calcScore(large_tally_counter_2)))
 
