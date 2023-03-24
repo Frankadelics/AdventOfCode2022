@@ -1,16 +1,5 @@
-class Rucksack:
-	def __init__(self, full_comp, first_comp, second_comp, priority):
-		self.full_comp = full_comp
-		self.first_comp = first_comp
-		self.second_comp = second_comp
-		self.priority = priority
-
 def getList(file_path):
 	set_of_item = set()
-	list_of_set = []
-	full_comp = ""
-	first_comp = ""
-	second_comp = ""
 	with open(file_path, 'r') as file:
 		rucksack_list = [x.strip() for x in file.readlines()]
 	return rucksack_list
