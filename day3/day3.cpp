@@ -1,139 +1,128 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <set>
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <algorithm>
+#include <unordered_set>
 using namespace std;
 
-class RuckSack
+vector<string> getVector(string filename)
 {
-	private:
-		string both_comp = "";
-		string comp1 = "";
-		string comp2 = "";
-		int priority = 0;
-	public:
-		//Getters
-		string getBothComp() { return both_comp; }
-		string getComp1() { return comp1; }		
-		string getComp2() { return comp2; }
-		int getPriority() { return priority; }
-		
-		//Setters
-		void setBothComp(string comp) { both_comp = comp; }
-		void setComp1(string comp) { comp1 = comp; }		
-		void setComp2(string comp) { comp2 = comp; }
-		void setPriority(int prio) { priority = prio; }
-};
-
-void getInput(vector<RuckSack>& rucksack_vector, string filename)
-{
+	vector<string> rucksack;
 	string input = "";
-	RuckSack item;
 	ifstream readFromFile(filename);
 	while (getline(readFromFile, input))
-	{
-		item.setBothComp(input);
-		rucksack_vector.push_back(item);
-	}
+		rucksack.push_back(input);
+	return rucksack;
 }
 
-void printBothComp(vector<RuckSack>& rucksack_vector)
+vector<string> splitCompartment(string compartment)
 {
-	for (int i = 0; i < rucksack_vector.size(); i++)
-		cout << rucksack_vector[i].getBothComp() << endl;
+	vector<string> compartment_holder;
+	int length = compartment.length();
+	int half_length = length / 2;
+	compartment_holder.push_back(compartment.substr(0, half_length));
+	compartment_holder.push_back(compartment.substr(half_length, length));
+	return compartment_holder;
 }
 
-void printSplitComps(vector<RuckSack>& rucksack_vector)
+vector<char> createCharVec(string compartment)
 {
-	for (int i = 0; i < rucksack_vector.size(); i++)
-		cout << rucksack_vector[i].getComp1() << " | " << rucksack_vector[i].getComp2() << endl;
+	vector<char> comp_char;
+	for (int i = 0; i < compartment.length(); i++)
+		comp_char.push_back(compartment[i]);
+	sort(comp_char.begin(), comp_char.end());
+	return comp_char;
 }
 
-void printPriority(vector<RuckSack>& rucksack_vector)
-{
-	for (int i = 0; i < rucksack_vector.size(); i++)
-		cout << rucksack_vector[i].getPriority() << endl;
-}
-
-int calculateFullPriority(vector<RuckSack>& rucksack_vector)
-{
-	int counter = 0;
-	for (int i = 0; i < rucksack_vector.size(); i++)
-		counter += rucksack_vector[i].getPriority();
-	
-	return counter;
-}
-
-int findMatch(string comp1, string comp2)
-{
-	for (int i = 0; i < comp1.length(); i++)
-	{
-		for (int j = 0; j < comp2.length(); j++)
-		{
-			if (comp1[i] == comp2[j])
-			{
-				//Lower case letters offset
-				if (int(comp1[i]) >= 97 && int(comp1[i]) <= 122)
-					return int(comp1[i]) - 96;
-				//Upper case letters offset
-				else
-					return int(comp1[i]) - 38;
-			}
-		}
-	}
-	return 0;
-}
-
-void splitCompartments(vector<RuckSack>& rucksack_vector)
+vector<char> getPriority(vector<string>& rucksack)
 {
 	string comp1 = "";
 	string comp2 = "";
-	string full_comp = "";
-	int length = 0;
-	int half_length = 0;
-	for (int i = 0; i < rucksack_vector.size(); i++)
+	vector<string> comp_holder;
+	vector<char> vec1, vec2, holder, priority_list;
+	char container;
+	for (int i = 0; i < rucksack.size(); i++)
 	{
-		full_comp = rucksack_vector[i].getBothComp();
-		length = full_comp.length();
-		half_length = length / 2;
-		comp1 = full_comp.substr(0, half_length);
-		comp2 = full_comp.substr(half_length, length - 1);
+		comp_holder = splitCompartment(rucksack[i]);
+		comp1 = comp_holder[0];
+		comp2 = comp_holder[1];
+		comp_holder.clear();
 
-		rucksack_vector[i].setComp1(comp1);
-		rucksack_vector[i].setComp2(comp2);
-		rucksack_vector[i].setPriority(findMatch(comp1, comp2));
+		vec1 = createCharVec(comp1);
+		vec2 = createCharVec(comp2);
+
+		set_intersection(vec1.begin(), vec1.end(), vec2.begin(), vec2.end(), back_inserter(holder));
+		container = holder[0];
+		holder.clear();
+		priority_list.push_back(container);
 	}
+	return priority_list;
+}
+
+vector<char> getBadge(vector<string>& rucksacks)
+{
+	vector<char> rucksack1, rucksack2, rucksack3, rucksack12, priority_list, holder;
+	char character;
+	for (int i = 0; i < rucksacks.size(); i+=3)
+	{
+		rucksack1.clear(); rucksack2.clear(); rucksack3.clear(); rucksack12.clear();
+		rucksack1 = createCharVec(rucksacks[i]);
+		rucksack2 = createCharVec(rucksacks[i + 1]);
+		rucksack3 = createCharVec(rucksacks[i + 2]);
+		set_intersection(rucksack1.begin(), rucksack1.end(), rucksack2.begin(), rucksack2.end(), back_inserter(rucksack12));
+		set_intersection(rucksack12.begin(), rucksack12.end(), rucksack3.begin(), rucksack3.end(), back_inserter(holder));
+		character = holder[0];
+		holder.clear();
+		priority_list.push_back(character);
+	}
+	return priority_list;
+}
+
+void calculatePriority(vector<char>& badge)
+{
+	int counter = 0;
+	for (int i = 0; i < badge.size(); i++)
+	{
+		if (int(badge[i]) >= 97 && int(badge[i]) <= 122)
+			counter += int(badge[i]) - 96;
+		else
+			counter += int(badge[i]) - 38;
+	}
+	cout << "Total Priority: " << counter << endl;
 }
 
 int main()
 {
-	vector<RuckSack> small_rucksack;
-	vector<RuckSack> large_rucksack;
+	vector<string> small_rucksack;
+	vector<string> large_rucksack;
+	vector<char> small_priority;
+	vector<char> large_priority;
+	vector<char> small_badge;
+	vector<char> large_badge;
 
-	//Common between daus
-	getInput(small_rucksack, "small_input_day3.txt");
-	getInput(large_rucksack, "large_input_day3.txt");
+	//Part 1
+	cout << "Part 1" << endl;
+	small_rucksack = getVector("small_input_day3.txt");
+	large_rucksack = getVector("large_input_day3.txt");
+
+	small_priority = getPriority(small_rucksack);
+	large_priority = getPriority(large_rucksack);
+
+	calculatePriority(small_priority);
+	calculatePriority(large_priority);
+
+	cout << endl;
+
+	//Part 2
+	cout << "Part 2" << endl;
+	small_badge = getBadge(small_rucksack);
+	large_badge = getBadge(large_rucksack);
+
+	calculatePriority(small_badge);
+	calculatePriority(large_badge);
 	
-	//Day 1
-	cout << "Day 1" << endl;
-	splitCompartments(small_rucksack);
-	cout << "Small Total Priority: " << calculateFullPriority(small_rucksack) << endl;
-	//printBothComp(small_rucksack);
-	//printSplitComps(small_rucksack);
-	//printPriority(small_rucksack);
-
-	splitCompartments(large_rucksack);
-	cout << "Large Total Priority: " << calculateFullPriority(large_rucksack) << endl;
-	//printBothComp(large_rucksack);
-	//printSplitComps(large_rucksack);
-	//printPriority(large_rucksack);
-
-	//Day 2
-	cout << "Day 2" << endl;
-
 	return 0;
 }
-
