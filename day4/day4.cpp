@@ -34,30 +34,22 @@ vector<int> parseSections(string input)
 
 	//For f1
 	token1 = input.substr(0, input.find(delimiter1)); //should have f1-f2
-	//cout << "f1-f2: " << token1 << endl;
 	token2 = token1.substr(0, token1.find(delimiter2)); //should have f1
-	//cout << "f1: " << token2 << endl;
 	sections.push_back(stoi(token2));
 
 	//For f2
 	token1 = input.substr(0, input.find(delimiter1)); //should have f1-f2
-	//cout << "f1-f2: " << token1 << endl;
 	token2 = token1.substr(token1.find(delimiter2) + 1, token2.length() + 1); //should have f2
-	//cout << "f2: " << token2 << endl;
 	sections.push_back(stoi(token2));
 
 	//For n1
 	token1 = input.substr(input.find(delimiter1) + 1, input.length()); //should have n1-n2
-	//cout << "n1-n2: " << token1 << endl;
 	token2 = token1.substr(0, token1.find(delimiter2)); //should have n1
-	//cout << "n1: " << token2 << endl;
 	sections.push_back(stoi(token2));
 
 	//For n2
 	token1 = input.substr(input.find(delimiter1) + 1, input.length()); //should have n1-n2
-	//cout << "n1-n2: " << token1 << endl;
 	token2 = token1.substr(token1.find(delimiter2) + 1, token2.length() + 1); //should have n2
-	//cout << "n2: " << token2 << endl;
 	sections.push_back(stoi(token2));
 
 	return sections;
@@ -72,24 +64,12 @@ void findOverlapsPart1(vector<ElfSection> elf_sections)
 	for (int i = 0; i < elf_sections.size(); i++)
 	{
 		es = elf_sections[i];
-		//Check if first elf's sections fully overlap with the second elf's
 		if (es.getE1begin() >= es.getE2begin() && es.getE1end() <= es.getE2end())
-		{
-			//cout << "overlap1: " << es.getE1begin() << "-" << es.getE1end() << "," << es.getE2begin() << "-" << es.getE2end() << endl;
 			overlap1 = true;
-		}
-		
-		//Check if the second elf's sections fully overlap with the first elf's
 		if (es.getE2begin() >= es.getE1begin() && es.getE2end() <= es.getE1end())
-		{
-			//cout << "overlap2: " << es.getE1begin() << "-" << es.getE1end() << "," << es.getE2begin() << "-" << es.getE2end() << endl;
 			overlap2 = true;
-		}
-		
-		//If there is any overlap from either elf, then one range is fully within another
 		if (overlap1 || overlap2)
 				counter++;
-		
 		overlap1 = false;
 		overlap2 = false;
 	}
@@ -147,12 +127,6 @@ vector<ElfSection> getSections(string filename)
 		elf_sections.push_back(es);
 	}
 	return elf_sections;
-}
-
-void printVector(vector<string> sections)
-{
-	for (int i = 0; i < sections.size(); i++)
-		cout << sections[i] << endl;
 }
 
 int main()
